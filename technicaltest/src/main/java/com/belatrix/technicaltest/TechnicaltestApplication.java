@@ -9,28 +9,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class TechnicaltestApplication implements CommandLineRunner {
 
-	private static Logger LOG = LoggerFactory.getLogger(TechnicaltestApplication.class);
+	private static Logger logger = LoggerFactory.getLogger(TechnicaltestApplication.class);
 
 	@Autowired
 	private JobLoggerChanges jobLog;
 
 	public static void main(String[] args) {
-		LOG.info("STARTING THE APPLICATION");
+		logger.info("STARTING THE APPLICATION");
 		SpringApplication.run(TechnicaltestApplication.class, args);
-		LOG.info("APPLICATION FINISHED");
+		logger.info("APPLICATION FINISHED");
+	}
+
+	@Bean
+	public Logger consoleLogger(){
+		return LoggerFactory.getLogger("consoleLogger");
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		LOG.info("EXECUTING : command line runner");
-		jobLog.logMessage("message test", MessageType.MESSAGE, LoggerAction.CONSOLE);
+		logger.info("EXECUTING : command line runner");
 
-		for (int i = 0; i < args.length; ++i) {
-			LOG.info("args[{}]: {}", i, args[i]);
-		}
+		String message = "message test";
+		jobLog.logMessage(message, MessageType.MESSAGE, LoggerAction.CONSOLE);
+
+		logger.info("FINISH EXECUTION : command line runner");
+
 	}
 }

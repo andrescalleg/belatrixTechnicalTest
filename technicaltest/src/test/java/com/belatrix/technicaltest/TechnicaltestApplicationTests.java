@@ -9,5 +9,4 @@ class TechnicaltestApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

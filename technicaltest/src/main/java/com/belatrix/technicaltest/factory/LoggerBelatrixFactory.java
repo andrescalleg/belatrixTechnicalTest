@@ -11,21 +11,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggerBelatrixFactory {
 
-	private CommandExecutor logConsole;
+	private CommandExecutor logToConsole;
+
+	private CommandExecutor logToFile;
+
+	private CommandExecutor logToDatabase;
 
 	private Map<LoggerAction,CommandExecutor> actionExecutors;
 
-	public LoggerBelatrixFactory( @Qualifier("logToConsole") CommandExecutor logToConsole){
-		this.logConsole = logToConsole;
+	public LoggerBelatrixFactory( @Qualifier("logToConsole") CommandExecutor logToConsole,
+	                              @Qualifier("logToFile")CommandExecutor logToFile,
+	                              @Qualifier("logToDatabase")CommandExecutor logToDatabase
+	                             ) {
+		this.logToConsole = logToConsole;
+		this.logToDatabase = logToDatabase;
+		this.logToFile = logToFile;
 		actionExecutors = new HashMap<>();
 		setExecutorsValues();
 	}
 
 	private void setExecutorsValues() {
-		actionExecutors.put(LoggerAction.CONSOLE ,this.logConsole);
+		actionExecutors.put(LoggerAction.CONSOLE ,this.logToConsole);
+		actionExecutors.put(LoggerAction.DATA_BASE ,this.logToDatabase);
+		actionExecutors.put(LoggerAction.FILE ,this.logToFile);
 	}
 
-	public Optional<CommandExecutor> getValidateExecutor(LoggerAction action){
+	public Optional<CommandExecutor> getLoggerExecutor(LoggerAction action){
 		return Optional.of(actionExecutors.get(action));
 	}
 }
