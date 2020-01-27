@@ -36,6 +36,7 @@ public class TechnicaltestApplication implements CommandLineRunner {
 
 		String message = "message test";
 		jobLog.logMessage(message, MessageType.MESSAGE, LoggerAction.CONSOLE);
+		jobLog.logMessage(message, MessageType.MESSAGE, LoggerAction.FILE);
 
 		logger.info("FINISH EXECUTION : command line runner");
 

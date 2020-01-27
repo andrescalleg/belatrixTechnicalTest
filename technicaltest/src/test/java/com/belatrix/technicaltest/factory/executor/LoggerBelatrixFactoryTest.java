@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FactoryTest {
+public class LoggerBelatrixFactoryTest {
 
 	@Mock(name = "logToConsole")
 	CommandExecutor logToConsole;

@@ -4,9 +4,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.belatrix.technicaltest.model.MessageType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,36 +23,37 @@ public class LoggerConsoleTest {
 	@InjectMocks
 	private LogToConsoleExecutor logToConsole;
 
-	private Map params;
+	private LogToConsoleExecutor logToConsoleNoLog;
+
+	private static final String ERROR = "4";
 
 	@Before
-	public void setup() throws Exception{
-		params = new HashMap<String,String>();
-		params.put("userName", "userName");
-		params.put("password", "password");
-		params.put("logFileFolder", "/");
-		params.put("dbms", "dbms");
-		params.put("serverName", "serverName");
-		params.put("portNumber", "portNumber");
-		//logToConsole = new LogToConsoleExecutor(logger);
+	public void setup(){
+		logToConsoleNoLog = new LogToConsoleExecutor(null);
 	}
 
 	@Test
 	public void callLoggerConsoleInfo() throws Exception {
-		logToConsole.execute("message", MessageType.MESSAGE, params);
+		logToConsole.execute("message", MessageType.MESSAGE);
 		verify(logger, times(1)).info(any());
 	}
 
 	@Test
 	public void callLoggerConsoleError() throws Exception {
-		logToConsole.execute("message", MessageType.ERROR, params);
-		verify(logger, times(1)).info(any());
+		logToConsole.execute("message", MessageType.ERROR);
+		verify(logger, times(1)).error(any());
 	}
 
 	@Test
-	public void callLoggerConsoleWan() throws Exception {
-		logToConsole.execute("message", MessageType.WARNING, params);
-		verify(logger, times(1)).info(any());
+	public void callLoggerConsoleWaRn() throws Exception {
+		logToConsole.execute("message", MessageType.WARNING);
+		verify(logger, times(1)).warn(any());
+	}
+
+	@Test
+	public void callLoggerConsoleException() throws Exception {
+		String message = logToConsoleNoLog.execute("message", MessageType.WARNING);
+		Assert.assertEquals(message, ERROR);
 	}
 
 }
